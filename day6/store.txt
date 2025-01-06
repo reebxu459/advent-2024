@@ -1,0 +1,35 @@
+def test_obstacle(m:list, guard:Guard):
+    try:
+        
+        while guard.i >= 0 and guard.j >= 0:
+            # print(guard.i, guard.j, guard.direction)
+            x, y = 0, 0
+            if guard.direction == 'N':
+                x = guard.i-1
+                y = guard.j
+            elif guard.direction == 'E':
+                x = guard.i
+                y = guard.j+1
+            elif guard.direction == 'S':
+                x = guard.i+1
+                y = guard.j
+            else:
+                x = guard.i
+                y = guard.j-1
+
+            next_point = m[x][y]
+
+            if next_point == '.':
+                guard.move()
+                m[x][y] = set(guard.direction)
+            elif type(next_point) == set:
+                if guard.direction in next_point:
+                    return True # case where we have traversed this direction alrdy
+                else:
+                    m[x][y].add(guard.direction)
+                    guard.move()
+            elif next_point == '#':
+                guard.rotate()
+        return False
+    except IndexError:
+        return False
